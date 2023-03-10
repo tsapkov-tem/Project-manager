@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.url">jdbc:h2:mem:managerDB</property>
+    <property name="connection.driver_class">org.h2.Driver</property>
+    <mapping class="com.company.Models.HierarchyProjects"/>
+    <mapping class="com.company.Models.HierarchyTasks"/>
+    <mapping class="com.company.Models.Projects"/>
+    <mapping class="com.company.Models.Tasks"/>
+    <mapping class="com.company.Models.TasksToUsers"/>
+    <mapping class="com.company.Models.Users"/>
+  </session-factory>
+</hibernate-configuration>

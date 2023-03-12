@@ -1,6 +1,8 @@
-package com.company.Models;
+package com.company.Models.Tasks;
 
+import com.company.Models.Users.Users;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.Setter;
 

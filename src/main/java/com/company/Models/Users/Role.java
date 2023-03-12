@@ -1,4 +1,4 @@
-package com.company.Models;
+package com.company.Models.Users;
 
 public enum Role {
     USER,

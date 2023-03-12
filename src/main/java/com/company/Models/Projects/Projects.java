@@ -1,7 +1,9 @@
-package com.company.Models;
+package com.company.Models.Projects;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -11,6 +13,6 @@ public class Projects {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private boolean parent; //has parent
-    private boolean child; //has child
+    private Boolean parent; //has parent
+    private Boolean child; //has child
 }

@@ -6,11 +6,10 @@
   <session-factory>
     <property name="connection.url">jdbc:h2:mem:managerDB</property>
     <property name="connection.driver_class">org.h2.Driver</property>
-    <mapping class="com.company.Models.HierarchyProjects"/>
-    <mapping class="com.company.Models.HierarchyTasks"/>
-    <mapping class="com.company.Models.Projects"/>
-    <mapping class="com.company.Models.Tasks"/>
-    <mapping class="com.company.Models.TasksToUsers"/>
-    <mapping class="com.company.Models.Users"/>
+    <mapping class="com.company.Models.Projects.HierarchyProjects"/>
+    <mapping class="com.company.Models.Projects.HierarchyTasks"/>
+    <mapping class="com.company.Models.Tasks.Tasks"/>
+    <mapping class="com.company.Models.Tasks.TasksToUsers"/>
+    <mapping class="com.company.Models.Users.Users"/>
   </session-factory>
 </hibernate-configuration>

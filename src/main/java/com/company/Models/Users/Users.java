@@ -1,7 +1,7 @@
-package com.company.Models;
+package com.company.Models.Users;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.company.Models.Tasks.TasksToUsers;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +14,7 @@ public class Users {
     private String login;
     private String password;
     private Role role;
+
+    @OneToOne
+    public TasksToUsers tasksToUsers;
 }

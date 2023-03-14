@@ -1,14 +1,12 @@
 package com.company;
 
+import com.company.Models.Projects.Projects;
 import com.company.Models.Tasks.Status;
 import com.company.Models.Tasks.Tasks;
 import com.company.Models.Tasks.Type;
 import com.company.Models.Users.Role;
 import com.company.Models.Users.Users;
-import com.company.Repos.HierarchyTasksRepos;
-import com.company.Repos.TaskToUsersRepos;
-import com.company.Repos.TasksRepos;
-import com.company.Repos.UsersRepos;
+import com.company.Repos.*;
 import com.company.Services.TasksService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +40,8 @@ public class TasksServiceTest {
     TaskToUsersRepos tasksToUsersRepos;
     @Autowired
     UsersRepos usersRepos;
+    @Autowired
+    ProjectsRepos projectsRepos;
 
 
 /** 
@@ -50,8 +50,20 @@ public class TasksServiceTest {
 * 
 */ 
 @Test
-public void testAddTask() throws Exception { 
-    Tasks tasks = tasksService.addTask("name", "task1", Type.ENGINEER, Status.NEW, 1, 1000);
+public void testAddTask() throws Exception {
+    Users user = new Users();
+    user.setId(1);
+    user.setLogin("");
+    user.setPassword("");
+    user.setRole("");
+    user = usersRepos.save(user);
+    Projects projects = new Projects();
+    projects.setId(1);
+    projects.setName("");
+    projects.setChild(false);
+    projects.setParent(false);
+    projects = projectsRepos.save(projects);
+    Tasks tasks = tasksService.addTask("name", "task1", Type.ENGINEER, Status.NEW, user.getId(),projects.getId());
     assertThat(tasks).isNotNull();
 
     Tasks addedTask = tasksRepos.findById(tasks.getId()).orElse(null);
@@ -61,7 +73,7 @@ public void testAddTask() throws Exception {
     assertThat(addedTask.getStatus()).isEqualTo(tasks.getStatus());
     assertThat(addedTask.getType()).isEqualTo(tasks.getType());
 
-    assertThat(hierarchyTasksRepos.findAllByIdProject(1000).size()).isEqualTo(1);
+    assertThat(hierarchyTasksRepos.findAllByIdProject(projects.getId()).size()).isEqualTo(1);
     assertThat(tasksToUsersRepos.findByIdTask(addedTask.getId()).orElse(null)).isNotNull();
 } 
 
@@ -77,7 +89,7 @@ public void testUpdateTypeTask() throws Exception {
     Tasks updatedTask = tasksRepos.findById(task.getId()).orElse(null);
     assertThat(updatedTask).isNotNull();
 
-    assertThat(updatedTask.getType()).isEqualTo(Type.MANAGER);
+    assertThat(updatedTask.getType()).isEqualTo("MANAGER");
     assertThat(updatedTask.getText()).isEqualTo(task.getText());
     assertThat(updatedTask.getStatus()).isEqualTo(task.getStatus());
 } 
@@ -96,7 +108,7 @@ public void testUpdateStatusTask() throws Exception {
 
     assertThat(updatedTask.getType()).isEqualTo(task.getType());
     assertThat(updatedTask.getText()).isEqualTo(task.getText());
-    assertThat(updatedTask.getStatus()).isEqualTo(Status.DONE);
+    assertThat(updatedTask.getStatus()).isEqualTo("DONE");
 } 
 
 /** 
@@ -144,17 +156,23 @@ public void testGetTasksForProject() throws Exception {
 */ 
 @Test
 public void testDeleteTask() throws Exception {
-    Users users = new Users();
-    users.setId(2);
-    users.setLogin("user");
-    users.setPassword("password");
-    users.setRole(String.valueOf(Role.ADMIN));
-    users = usersRepos.save(users);
-    Tasks task = tasksService.addTask("name","task1", Type.ENGINEER, Status.NEW, 1, 1000);
-    tasksService.deleteTask(task.getId(), users.getId());
-    assertThat(tasksRepos.findById(task.getId()).orElse(null)).isNull();
-    assertThat(tasksToUsersRepos.findByIdTask(task.getId()).orElse(null)).isNull();
-    assertThat(hierarchyTasksRepos.findByIdTask(task.getId()).orElse(null)).isNull();
+    Users user = new Users();
+    user.setId(1);
+    user.setLogin("");
+    user.setPassword("");
+    user.setRole("");
+    user = usersRepos.save(user);
+    Projects projects = new Projects();
+    projects.setId(1);
+    projects.setName("");
+    projects.setChild(false);
+    projects.setParent(false);
+    projects = projectsRepos.save(projects);
+    Tasks tasks = tasksService.addTask("name", "task1", Type.ENGINEER, Status.NEW, user.getId(), projects.getId());
+    tasksService.deleteTask(tasks.getId(), user.getId());
+    assertThat(tasksRepos.findById(tasks.getId()).orElse(null)).isNull();
+    assertThat(tasksToUsersRepos.findByIdTask(tasks.getId()).orElse(null)).isNull();
+    assertThat(hierarchyTasksRepos.findByIdTask(tasks.getId()).orElse(null)).isNull();
 } 
 
 /** 

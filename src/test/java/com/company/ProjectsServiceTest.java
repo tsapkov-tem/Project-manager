@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -134,29 +135,36 @@ public void testGetAllProjects() throws Exception {
 public void testGetTasksForProject() throws Exception {
     Projects project = projectsService.addProject("Project1");
 
-    HierarchyTasks hierarchyTasks = new HierarchyTasks();
-    hierarchyTasks.setIdTask(1);
-    hierarchyTasks.setIdProject(project.getId());
-    hierarchyTasksRepos.save(hierarchyTasks);
-
-    HierarchyTasks hierarchyTasks2 = new HierarchyTasks();
-    hierarchyTasks2.setIdTask(2);
-    hierarchyTasks2.setIdProject(project.getId());
-    hierarchyTasksRepos.save(hierarchyTasks2);
 
     Tasks tasks = new Tasks();
-    tasks.setId(1);
     tasks.setText("Task1");
-    tasks.setStatus(Status.DONE);
-    tasks.setType(Type.ENGINEER);
+    tasks.setStatus(String.valueOf(Status.DONE));
+    tasks.setType(String.valueOf(Type.ENGINEER));
+    tasks.setName("name");
+    Date date = new Date();
+    tasks.setDate_change(String.valueOf(date));
+    tasks.setDate_create(String.valueOf(date));
     tasksRepos.save(tasks);
 
     Tasks tasks2 = new Tasks();
-    tasks2.setId(2);
     tasks2.setText("Task2");
-    tasks2.setStatus(Status.DONE);
-    tasks2.setType(Type.ENGINEER);
+    tasks2.setName("name2");
+    tasks2.setStatus(String.valueOf(Status.DONE));
+    tasks2.setType(String.valueOf(Type.ENGINEER));
+    date = new Date();
+    tasks2.setDate_change(String.valueOf(date));
+    tasks2.setDate_create(String.valueOf(date));
     tasksRepos.save(tasks2);
+
+    HierarchyTasks hierarchyTasks = new HierarchyTasks();
+    hierarchyTasks.setIdProject(project.getId());
+    hierarchyTasks.setIdTask(tasks.getId());
+    hierarchyTasksRepos.save(hierarchyTasks);
+
+    HierarchyTasks hierarchyTasks2 = new HierarchyTasks();
+    hierarchyTasks2.setIdTask(tasks2.getId());
+    hierarchyTasks2.setIdProject(project.getId());
+    hierarchyTasksRepos.save(hierarchyTasks2);
 
     List<Tasks> tasksList = projectsService.getTasksForProject(project.getId());
     assertThat(tasksList.size()).isEqualTo(2);
@@ -201,14 +209,17 @@ public void testDeleteSubProject() throws Exception {
     Projects addedSubProject = projectsService.addSubProject("SubProject1", project.getId());
 
     Tasks tasks = new Tasks();
-    tasks.setId(1);
     tasks.setText("Task1");
-    tasks.setStatus(Status.DONE);
-    tasks.setType(Type.ENGINEER);
-    tasksRepos.save(tasks);
+    tasks.setStatus(String.valueOf(Status.DONE));
+    tasks.setType(String.valueOf(Type.ENGINEER));
+    tasks.setName("name");
+    Date date = new Date();
+    tasks.setDate_change(String.valueOf(date));
+    tasks.setDate_create(String.valueOf(date));
+    tasks = tasksRepos.save(tasks);
 
     HierarchyTasks hierarchyTasks = new HierarchyTasks();
-    hierarchyTasks.setIdTask(1);
+    hierarchyTasks.setIdTask(tasks.getId());
     hierarchyTasks.setIdProject(addedSubProject.getId());
     hierarchyTasksRepos.save(hierarchyTasks);
 
@@ -246,14 +257,16 @@ public void testDeleteBranch() throws Exception {
     Integer idProject  = project.getId();
 
     Tasks tasks = new Tasks();
-    tasks.setId(1);
     tasks.setText("Task1");
-    tasks.setStatus(Status.DONE);
-    tasks.setType(Type.ENGINEER);
-    tasksRepos.save(tasks);
+    tasks.setStatus(String.valueOf(Status.DONE));
+    tasks.setType(String.valueOf(Type.ENGINEER));
+    tasks.setName("name");
+    tasks.setDate_change(String.valueOf(new Date()));
+    tasks.setDate_create(String.valueOf(new Date()));
+    tasks = tasksRepos.save(tasks);
 
     HierarchyTasks hierarchyTasks = new HierarchyTasks();
-    hierarchyTasks.setIdTask(1);
+    hierarchyTasks.setIdTask(tasks.getId());
     hierarchyTasks.setIdProject(addedSubProject.getId());
     hierarchyTasksRepos.save(hierarchyTasks);
 

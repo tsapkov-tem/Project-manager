@@ -35,8 +35,7 @@ public class ProjectsService {
         project.setName(name);
         project.setChild(false);
         project.setParent(false);
-        projectsRepos.save(project);
-        return project;
+        return projectsRepos.save(project);
     }
 
     public Projects updateNameProject(Integer idProject, String name){

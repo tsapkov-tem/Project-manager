@@ -1,8 +1,6 @@
 package com.company.Repos;
 
-import com.company.Models.Tasks.Tasks;
 import com.company.Models.Tasks.TasksToUsers;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

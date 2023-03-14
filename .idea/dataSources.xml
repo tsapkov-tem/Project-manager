@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="managerDB" uuid="09214cf5-3f9a-49c4-a0c7-03bbd646961a">
-      <driver-ref>h2.unified</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:mem:managerDB</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="9baaae6d-1753-415b-97cf-695b95ab4c92">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
@@ -15,6 +8,13 @@
       <remarks>Hibernate
 
 C:/Users/tsapk/IdeaProjects/project-manager/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:mem:managerDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="managerDB" uuid="3392f7c8-ca10-4976-a0fa-14d8bb0910f8">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
       <jdbc-url>jdbc:h2:mem:managerDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>

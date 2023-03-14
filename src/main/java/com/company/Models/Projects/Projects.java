@@ -1,18 +1,27 @@
 package com.company.Models.Projects;
-import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import javax.persistence.*;
+
 
 @Entity
 @Getter
 @Setter
 public class Projects {
     @Id
+    @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Basic
+    @Column(name = "NAME", nullable = false, length = 40)
     private String name;
-    private Boolean parent; //has parent
-    private Boolean child; //has child
+    @Basic
+    @Column(name = "PARENT", nullable = false)
+    private Boolean parent;
+    @Basic
+    @Column(name = "CHILD", nullable = false)
+    private Boolean child;
+
 }

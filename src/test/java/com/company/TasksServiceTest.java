@@ -3,9 +3,12 @@ package com.company;
 import com.company.Models.Tasks.Status;
 import com.company.Models.Tasks.Tasks;
 import com.company.Models.Tasks.Type;
+import com.company.Models.Users.Role;
+import com.company.Models.Users.Users;
 import com.company.Repos.HierarchyTasksRepos;
 import com.company.Repos.TaskToUsersRepos;
 import com.company.Repos.TasksRepos;
+import com.company.Repos.UsersRepos;
 import com.company.Services.TasksService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 /** 
 * TasksService Tester. 
@@ -38,16 +40,18 @@ public class TasksServiceTest {
     TasksService tasksService;
     @Autowired
     TaskToUsersRepos tasksToUsersRepos;
+    @Autowired
+    UsersRepos usersRepos;
 
 
 /** 
 * 
-* Method: addTask(String text, Type type, Status status, Integer idAuthor) 
+* Method: addTask(String name, String text, Type type, Status status, Integer idAuthor)
 * 
 */ 
 @Test
 public void testAddTask() throws Exception { 
-    Tasks tasks = tasksService.addTask("task1", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks tasks = tasksService.addTask("name", "task1", Type.ENGINEER, Status.NEW, 1, 1000);
     assertThat(tasks).isNotNull();
 
     Tasks addedTask = tasksRepos.findById(tasks.getId()).orElse(null);
@@ -68,7 +72,7 @@ public void testAddTask() throws Exception {
 */ 
 @Test
 public void testUpdateTypeTask() throws Exception {
-    Tasks task = tasksService.addTask("task1", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks task = tasksService.addTask("name", "task1", Type.ENGINEER, Status.NEW, 1, 1000);
     tasksService.updateTypeTask(task.getId(), Type.MANAGER);
     Tasks updatedTask = tasksRepos.findById(task.getId()).orElse(null);
     assertThat(updatedTask).isNotNull();
@@ -85,7 +89,7 @@ public void testUpdateTypeTask() throws Exception {
 */ 
 @Test
 public void testUpdateStatusTask() throws Exception {
-    Tasks task = tasksService.addTask("task1", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks task = tasksService.addTask("name", "task1", Type.ENGINEER, Status.NEW, 1, 1000);
     tasksService.updateStatusTask(task.getId(), Status.DONE);
     Tasks updatedTask = tasksRepos.findById(task.getId()).orElse(null);
     assertThat(updatedTask).isNotNull();
@@ -102,7 +106,7 @@ public void testUpdateStatusTask() throws Exception {
 */ 
 @Test
 public void testUpdateTextTask() throws Exception {
-    Tasks task = tasksService.addTask("task1", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks task = tasksService.addTask("name", "task1", Type.ENGINEER, Status.NEW, 1, 1000);
     tasksService.updateTextTask(task.getId(), "task2");
     Tasks updatedTask = tasksRepos.findById(task.getId()).orElse(null);
     assertThat(updatedTask).isNotNull();
@@ -119,9 +123,9 @@ public void testUpdateTextTask() throws Exception {
 */ 
 @Test
 public void testGetTasksForProject() throws Exception {
-    Tasks tasks = tasksService.addTask("task1", Type.ENGINEER, Status.NEW, 1, 1000);
-    Tasks tasks2 = tasksService.addTask("task2", Type.ENGINEER, Status.NEW, 1, 1000);
-    Tasks tasks3 = tasksService.addTask("task3", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks tasks = tasksService.addTask("name1","task1", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks tasks2 = tasksService.addTask("name2", "task2", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks tasks3 = tasksService.addTask("name3","task3", Type.ENGINEER, Status.NEW, 1, 1000);
     List<Integer> idList = new ArrayList<>();
     idList.add(tasks.getId());
     idList.add(tasks2.getId());
@@ -140,8 +144,14 @@ public void testGetTasksForProject() throws Exception {
 */ 
 @Test
 public void testDeleteTask() throws Exception {
-    Tasks task = tasksService.addTask("task1", Type.ENGINEER, Status.NEW, 1, 1000);
-    tasksService.deleteTask(task.getId());
+    Users users = new Users();
+    users.setId(2);
+    users.setLogin("user");
+    users.setPassword("password");
+    users.setRole(String.valueOf(Role.ADMIN));
+    users = usersRepos.save(users);
+    Tasks task = tasksService.addTask("name","task1", Type.ENGINEER, Status.NEW, 1, 1000);
+    tasksService.deleteTask(task.getId(), users.getId());
     assertThat(tasksRepos.findById(task.getId()).orElse(null)).isNull();
     assertThat(tasksToUsersRepos.findByIdTask(task.getId()).orElse(null)).isNull();
     assertThat(hierarchyTasksRepos.findByIdTask(task.getId()).orElse(null)).isNull();
@@ -154,9 +164,9 @@ public void testDeleteTask() throws Exception {
 */ 
 @Test
 public void testDeleteAll() throws Exception {
-    Tasks tasks = tasksService.addTask("task1", Type.ENGINEER, Status.NEW, 1, 1000);
-    Tasks tasks2 = tasksService.addTask("task2", Type.ENGINEER, Status.NEW, 1, 1000);
-    Tasks tasks3 = tasksService.addTask("task3", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks tasks = tasksService.addTask("name1","task1", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks tasks2 = tasksService.addTask("name2","task2", Type.ENGINEER, Status.NEW, 1, 1000);
+    Tasks tasks3 = tasksService.addTask("name3","task3", Type.ENGINEER, Status.NEW, 1, 1000);
     List<Integer> idList = new ArrayList<>();
     idList.add(tasks.getId());
     idList.add(tasks2.getId());

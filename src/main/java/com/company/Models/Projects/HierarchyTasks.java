@@ -1,18 +1,23 @@
 package com.company.Models.Projects;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "HIERARCHY_TASKS", schema = "PUBLIC", catalog = "MANAGERDB")
+@Table(name = "HIERARCHY_TASKS")
 public class HierarchyTasks {
-
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "ID", nullable = false)
     private Integer id;
+    @Basic
+    @Column(name = "ID_PROJECT")
     private Integer idProject;
+    @Basic
+    @Column(name = "ID_TASK")
     private Integer idTask;
+
 }

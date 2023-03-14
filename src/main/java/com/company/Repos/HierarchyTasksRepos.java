@@ -11,10 +11,11 @@ import java.util.Optional;
 @Repository
 public interface HierarchyTasksRepos extends CrudRepository<HierarchyTasks, Integer> {
     List<HierarchyTasks> findAllByIdProject(Integer id);
-    void removeAllByIdProject(Integer idProject);
+    void deleteAllByIdProject(Integer idProject);
 
     Optional<HierarchyTasks> findByIdTask(Integer idTask);
     void deleteByIdTask(Integer idTask);
 
     void deleteAllByIdTaskIn(List<Integer> ids);
+
 }

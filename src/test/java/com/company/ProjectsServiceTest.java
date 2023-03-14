@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 /** 
 * ProjectsService Tester. 
@@ -233,7 +234,7 @@ public void testDeleteSubProject() throws Exception {
     assertThat(tasksList.size()).isEqualTo(0);
     assertThat(hierarchyTasksRepos.findAllByIdProject(addedSubProject.getId()).size()).isEqualTo(0);
 
-    assertThat(hierarchyProjectsRepos.findByIdChild(addedSubProject.getId())).isNull();
+    assertThat(hierarchyProjectsRepos.findByIdChild(addedSubProject.getId())).isEmpty();
 
     addedSubProject = projectsRepos.findById(addedSubProject.getId()).orElse(null);
     assertThat(addedSubProject).isNull();
@@ -270,11 +271,19 @@ public void testDeleteBranch() throws Exception {
     hierarchyTasks.setIdProject(addedSubProject.getId());
     hierarchyTasksRepos.save(hierarchyTasks);
 
+    HierarchyProjects hierarchyProjects = new HierarchyProjects();
+    hierarchyProjects.setIdChild(addedSubProject.getId());
+    hierarchyProjects.setIdParent(project.getId());
+    hierarchyProjectsRepos.save(hierarchyProjects);
+
     projectsService.deleteBranch(project.getId());
 
     List<Tasks> tasksList = projectsService.getTasksForProject(addedSubProject.getId());
     assertThat(tasksList.size()).isEqualTo(0);
     assertThat(hierarchyTasksRepos.findAllByIdProject(addedSubProject.getId()).size()).isEqualTo(0);
+
+    List<HierarchyProjects> hierarchyProjectsList = hierarchyProjectsRepos.findAllByIdParent(project.getId());
+    assertThat(hierarchyProjectsList.size()).isEqualTo(0);
 
     addedSubProject = projectsRepos.findById(addedSubProject.getId()).orElse(null);
     assertThat(addedSubProject).isNull();

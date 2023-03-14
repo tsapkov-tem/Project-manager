@@ -14,4 +14,7 @@ public interface ProjectsRepos extends CrudRepository<Projects, Integer> {
     List<Projects> findAllByParent(boolean parent);
 
     List<Projects> findAllByIdIn(List<Integer> ids);
+
+    @Override
+    void deleteById(Integer idProject);
 }

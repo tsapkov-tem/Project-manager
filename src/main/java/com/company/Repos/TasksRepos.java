@@ -10,4 +10,7 @@ import java.util.List;
 public interface TasksRepos extends CrudRepository<Tasks, Integer> {
     List<Tasks> findAllByIdIn(List<Integer> ids);
     void deleteAllByIdIn(List<Integer> ids);
+
+    @Override
+    void deleteById(Integer idTask);
 }

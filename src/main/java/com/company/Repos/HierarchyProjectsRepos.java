@@ -10,7 +10,8 @@ import java.util.List;
 @Repository
 public interface HierarchyProjectsRepos extends CrudRepository<HierarchyProjects, Integer> {
     List<HierarchyProjects> findAllByIdParent(Integer id);
-    void removeByIdChild(Integer idChild);
+    void deleteByIdChild(Integer idChild);
 
-    HierarchyProjects findByIdChild(Integer idChild);
+    List<HierarchyProjects> findByIdChild(Integer idChild);
+
 }

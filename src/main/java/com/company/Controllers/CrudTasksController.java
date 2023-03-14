@@ -21,7 +21,7 @@ public class CrudTasksController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/addTask") //add task for project or subproject
     public Tasks addTask(@RequestParam String name,  String text, Type type, Status status, Integer idAuthor, Integer idProject){
         return tasksService.addTask(name, text, type, status, idAuthor, idProject);
